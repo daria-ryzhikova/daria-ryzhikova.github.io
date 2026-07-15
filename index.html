@@ -670,6 +670,35 @@ background:#fff;border:1px solid var(--cloud);border-radius:10000px;padding:6px 
 </main>
 <footer class="foot">Daria Ryzhikova · Senior Product Marketing &amp; Growth · <a href="mailto:d-ryzhikova@inbox.ru">d-ryzhikova@inbox.ru</a> · <a href="https://t.me/DarinaR97" target="_blank" rel="noopener">@DarinaR97</a></footer>
 <script>
+/* доскроллы: сколько людей долистало до каждого блока (события в GoatCounter) */
+(function(){
+  function send(path, title){
+    if (window.goatcounter && window.goatcounter.count){
+      window.goatcounter.count({path: path, title: title, event: true});
+    }
+  }
+  var marks = [
+    ['#flagship', 'scroll/1-dr-congo',   'Доскролл: ДР Конго'],
+    ['#tbank',    'scroll/2-tbank',      'Доскролл: T-Bank'],
+    ['#yango',    'scroll/3-yango',      'Доскролл: Yango'],
+    ['#bat',      'scroll/4-bat',        'Доскролл: BAT'],
+    ['#contact',  'scroll/5-contact',    'Доскролл: Контакты']
+  ];
+  var seen = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var id = '#' + e.target.id;
+      marks.forEach(function(m){
+        if (m[0] === id && !seen[id]){ seen[id] = 1; send(m[1], m[2]); }
+      });
+    });
+  }, {threshold: 0.4});
+  marks.forEach(function(m){
+    var el = document.querySelector(m[0]);
+    if (el) io.observe(el);
+  });
+})();
 /* индикатор прогресса + кнопка «наверх» */
 (function(){
   var bar = document.getElementById('progress');
