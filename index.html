@@ -27,7 +27,15 @@
 --font:'DM Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--paper);color:var(--iron);font-family:var(--font);
-font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+/* iOS: убрать серую вспышку при тапе; отклик даём своими :active-состояниями */
+a,button,.do-card,.cs-btn,.grp-btn,.cta,.totop{-webkit-tap-highlight-color:transparent;}
+@media(hover:none){
+  .cta:active{transform:translateY(1px);}
+  .do-card:active{transform:scale(.99);border-color:var(--mist);}
+  .cs-btn:active,.grp-btn:active,.rm-toggle:active{filter:brightness(.94);}
+}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
 p{margin:0 0 18px;max-width:66ch;line-height:1.6;}
 strong{color:var(--graphite);font-weight:600;}
@@ -500,7 +508,7 @@ display:flex;align-items:center;justify-content:center;gap:8px;}
 .mc-open .mc-btn .mc-chev{transform:rotate(180deg);}
 
 /* кнопка «наверх» — появляется, когда пролистал первый экран */
-.totop{position:fixed;right:22px;bottom:22px;z-index:50;
+.totop{position:fixed;right:22px;bottom:max(22px, env(safe-area-inset-bottom, 0px));z-index:50;
 width:46px;height:46px;border-radius:50%;cursor:pointer;
 background:var(--obsidian);color:#fff;border:none;
 display:flex;align-items:center;justify-content:center;
@@ -511,7 +519,7 @@ transition:opacity .2s ease, transform .2s ease;}
 .totop.on{opacity:1;transform:none;pointer-events:auto;}
 .totop:hover{background:var(--ember);}
 .totop:focus-visible{outline:2px solid var(--ember);outline-offset:3px;}
-@media(max-width:700px){.totop{right:14px;bottom:14px;width:42px;height:42px;}}
+@media(max-width:700px){.totop{right:14px;bottom:max(16px, env(safe-area-inset-bottom, 0px));width:46px;height:46px;}}
 @media(prefers-reduced-motion:reduce){.totop{transition:none;}}
 
 /* индикатор прогресса + быстрые переходы (только мобильный) */
@@ -520,9 +528,10 @@ transition:width .1s linear;display:none;}
 .jump{display:none;position:sticky;top:52px;z-index:19;
 background:rgba(244,244,245,.94);backdrop-filter:saturate(180%) blur(10px);
 border-bottom:1px solid var(--cloud);padding:8px 16px;}
-.jump-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.jump-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .jump-row::-webkit-scrollbar{display:none;}
 .jump-row a{flex:0 0 auto;font-size:12px;font-weight:600;color:var(--steel);text-decoration:none;
+display:flex;align-items:center;min-height:40px;
 background:#fff;border:1px solid var(--cloud);border-radius:10000px;padding:6px 12px;white-space:nowrap;}
 .jump-row a:first-child{color:var(--ember);border-color:rgba(255,90,0,.3);}
 
